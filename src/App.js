@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Navigation from './components/Navigation'
-import Home from './components/Home'
-import About from './components/About'
-import Error from './components/Error'
+import Home from './components/Pages/Home'
+import About from './components/Pages/About'
+import Error from './components/Pages/Error'
+import Data from './components/Pages/Data'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Navigation />
             <Switch>
              <Route path="/" component={Home} exact/>
+             <Route path="/data" component={Data}/>
              <Route path="/about" component={About}/>
              <Route component={Error}/>
            </Switch>

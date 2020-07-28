@@ -5,7 +5,6 @@ import Nav from 'react-bootstrap/Nav';
 import { withRouter } from "react-router";
  
 const Navigation = props => {
-    console.log(props);
     const { location } = props;
     return (
         <Navbar bg="dark" variant="dark">
@@ -14,6 +13,7 @@ const Navigation = props => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto" activeKey={location.pathname}>
                     <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/data">Data</Nav.Link>
                     <Nav.Link href="/about">About</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
