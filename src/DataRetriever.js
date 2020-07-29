@@ -7,7 +7,7 @@ class DataRetriever {
      * @summary fetches a query
      * @param query query url to fetch
      */
-    static async _getQuery(query) {
+    static async _getQuery(query, delayScalar = 1) {
         console.log(`Pushshift request ${query}`);
         let data;
         try {
@@ -17,8 +17,8 @@ class DataRetriever {
             data = await resp.json();
         }
         catch {
-            setTimeout(DataRetriever._queryDelay)
-            data = DataRetriever._getQuery(query)
+            setTimeout(DataRetriever._queryDelay*delayScalar)
+            data = DataRetriever._getQuery(query,delayScalar+1)
         }
 
         return data;
@@ -32,7 +32,8 @@ class DataRetriever {
         let fetchedQs = []
         for (let q of queries) {
             setTimeout(DataRetriever._queryDelay);
-            fetchedQs.push(await DataRetriever._getQuery(q));
+            const fetchedQ = await DataRetriever._getQuery(q)
+            fetchedQs.push(fetchedQ.data);
         }
         return fetchedQs;
     }
@@ -49,9 +50,17 @@ class DataRetriever {
         let afterEpoch = after ? Math.round(after.getTime() / 1000) : null;
         let beforeEpoch = before ? Math.round(before.getTime() / 1000) : null;
 
+        // Decide frequency of aggregate
+        let numBins = Math.round(numComments/DataRetriever._maxQsize)
+        let avgBinTime = (beforeEpoch - afterEpoch) / numBins;
+        let fiveHours = 18000;
+        let freq;
+        avgBinTime > fiveHours ? freq = "hour" : freq = "minute";
+
         // Get a summary of comment volumn
         let aggQuery = DataRetriever._commentsURL + 
-            "aggs=created_utc&frequency=hour&size=0" +
+            "aggs=created_utc&size=0" +
+            "&frequency=" + freq +
             (after ? "&after=" + afterEpoch : "") +
             (before ? "&before=" + beforeEpoch : "") +
             (subreddit ? "&subreddit=" + subreddit : "") +
@@ -59,7 +68,6 @@ class DataRetriever {
         let agg = await DataRetriever._getQuery(aggQuery)
         agg = await agg.aggs.created_utc
 
-        let numBins = Math.round(numComments/DataRetriever._maxQsize)
         let totalComments = agg.reduce((a,b) => a + b.doc_count,0)
         let commentsPerBin = Math.round(totalComments/numBins)
 
@@ -80,7 +88,7 @@ class DataRetriever {
 
         });
         bins.push({...currentBin})
-        
+
         return bins;
     }
 
@@ -130,8 +138,7 @@ class DataRetriever {
     static async getComments(after, before, subreddit, q, numComments) {
         let queries = await DataRetriever._makeQueries(after,before,subreddit,q,numComments);
         let results = await DataRetriever._getQueries(queries);
-        console.log(results);
-        return results.flat()
+        return results.flat(2);
     }
 }
 
