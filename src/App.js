@@ -6,11 +6,12 @@ import Navigation from './components/Navigation'
 import Home from './components/Pages/Home'
 import About from './components/Pages/About'
 import Error from './components/Pages/Error'
-import Data from './components/Pages/Data'
+import Data from './components/Pages/Data/Data'
 
 function App() {
   return (
     <BrowserRouter>
+        <div id={"error-modal"}></div>
         <div>
           <Navigation />
             <Switch>

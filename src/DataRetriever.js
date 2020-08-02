@@ -1,7 +1,8 @@
 class DataRetriever {
     static _commentsURL = "https://api.pushshift.io/reddit/search/comment/?";
     static _maxQsize = 100; // The most results pushshift will return
-    static _queryDelay = 1100;
+    static _queryDelay = 1000;
+    static _queriesBeforeGiveUp = 10;
 
     /**
      * @summary fetches a query
@@ -17,7 +18,11 @@ class DataRetriever {
             data = await resp.json();
         }
         catch {
-            setTimeout(DataRetriever._queryDelay*delayScalar)
+            await this.sleep(DataRetriever._queryDelay*delayScalar)
+            if (delayScalar > this._queriesBeforeGiveUp) {
+                alert("Pushshift doesn't appear to be responding. Please refresh this page and verify that your internet is working. If that doesn't work, make sure that pushshift is functioning properly.");
+                return null;
+            }
             data = DataRetriever._getQuery(query,delayScalar+1)
         }
 
@@ -28,12 +33,16 @@ class DataRetriever {
      * @summary fetches a list of queries
      * @param {Array<String>} queries list of query urls
      */
-    static async _getQueries(queries) {
+    static async _getQueries(queries, progress) {
         let fetchedQs = []
+        let numCompleted = 0;
         for (let q of queries) {
-            setTimeout(DataRetriever._queryDelay);
+            await this.sleep(DataRetriever._queryDelay);
             const fetchedQ = await DataRetriever._getQuery(q)
             fetchedQs.push(fetchedQ.data);
+
+            numCompleted++;
+            progress(numCompleted/queries.length*100)
         }
         return fetchedQs;
     }
@@ -65,8 +74,10 @@ class DataRetriever {
             (before ? "&before=" + beforeEpoch : "") +
             (subreddit ? "&subreddit=" + subreddit : "") +
             (q ? "&q=" + q : "");
-        let agg = await DataRetriever._getQuery(aggQuery)
-        agg = await agg.aggs.created_utc
+        let agg = await DataRetriever._getQuery(aggQuery);
+        agg = await agg.aggs.created_utc;
+
+        if(agg.length===0) throw Error("Search Returned Zero Results");
 
         let totalComments = agg.reduce((a,b) => a + b.doc_count,0)
         let commentsPerBin = Math.round(totalComments/numBins)
@@ -131,14 +142,19 @@ class DataRetriever {
      * @param subreddit
      * @param q search term
      * @param numComments
+     * @param {Function} progress a callback function to display progress
      * @description Gathers the top comments that match the paramaters. 
      * To get around pushshift's 500 comment per query, this ceates multiple 
      * bins that are adjusted for posting frequency.
      */
-    static async getComments(after, before, subreddit, q, numComments) {
+    static async getComments(after, before, subreddit, q, numComments, progress) {
         let queries = await DataRetriever._makeQueries(after,before,subreddit,q,numComments);
-        let results = await DataRetriever._getQueries(queries);
+        let results = await DataRetriever._getQueries(queries, progress);
         return results.flat(2);
+    }
+
+    static sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
 

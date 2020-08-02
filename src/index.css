@@ -1,5 +1,6 @@
 :root{
   --t1-color: #ff5100;
+  --t1-color-darker: #d14200;
   --t2-color: #e0e0e0;
   --t3-color: #bebebe;
   --main-bg: #262626;
@@ -32,6 +33,11 @@ h1, h2, h3, h4 {
 }
 
 /* Pages */
+
+input.form-control {
+  margin-top: 10px;
+}
+
 div.page {
   background:var(--main-bg);
 }
@@ -54,5 +60,91 @@ div.page p {
 /* Text Page  */
 div.page.text {
   text-align: center;
+}
+
+/* Data Page */
+div#data-requestor {
+  width: 70%;
+  margin: auto;
+}
+
+div#num-results-slider {
+  display: block;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin:auto;
+  margin-top: 10px;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.btn {
+  width:100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin:auto;
+  margin-top: 10px;
+  background: var(--t1-color);
+  border-color: var(--t1-color);
+}
+
+.inputR {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  opacity: 1;
+  outline: none;
+  margin: 0 auto;
+}
+
+.form-control-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background: lightgray;
+  outline: none;
+  opacity: 0.9;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  border-radius: 5px;  
+}
+
+.form-control-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background:var(--t1-color);
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  border-radius: 50%;  
+  opacity: 1;
+}
+
+.form-control-range:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.form-control-range::-moz-range-thumb {
+  background:var(--t1-color);
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 50%; 
+}
+
+div.progress {
+  margin-top: 10px;
 }
 
