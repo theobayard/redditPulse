@@ -42,7 +42,7 @@ class DataRetriever {
             fetchedQs.push(fetchedQ.data);
 
             numCompleted++;
-            progress(numCompleted/queries.length*100)
+            progress(numCompleted/queries.length)
         }
         return fetchedQs;
     }
@@ -151,6 +151,22 @@ class DataRetriever {
         let queries = await DataRetriever._makeQueries(after,before,subreddit,q,numComments);
         let results = await DataRetriever._getQueries(queries, progress);
         return results.flat(2);
+    }
+
+    static async getRequests(requests, numResults, progress) {
+        let numResultsPer = Math.ceil(numResults/requests.length);
+
+        let data = []
+        for(let i = 0; i < requests.length; i++) {
+            // Make progress reflect larger process
+            let rProgress = p => progress(((i+p)/requests.length)*100);
+            
+            const r = requests[i];
+            console.log(r)
+            data.push(await DataRetriever.getComments(r.afterDate,r.beforeDate,
+                r.subreddit,r.term,numResultsPer, rProgress));
+        }
+        return data.flat(2);
     }
 
     static sleep(ms) {

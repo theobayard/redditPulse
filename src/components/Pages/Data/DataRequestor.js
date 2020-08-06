@@ -7,7 +7,6 @@ import DataRetriever from '../../../DataRetriever.js'
 import DataDownloader from './DataDownloader'
 import ErrorModal from '../../ErrorModal'
 import DataQuery from './DataQuery'
-import { queries } from '@testing-library/react';
 
 class DataRequestor extends React.Component {
     minDate = new Date(Date.parse("2005-12-01"));
@@ -22,7 +21,7 @@ class DataRequestor extends React.Component {
             numResults: 10000,
             progress: 0,
             gatheringData: false,
-            queries: [{},{}],
+            queries: [{}],
         }
     }
 
@@ -34,6 +33,8 @@ class DataRequestor extends React.Component {
                         <DataQuery key={i} d={d} index={i}
                             onChange={this.onQueryChange}/>
                     )}
+                    {this.subtractQueryButton}
+                    {this.addQueryButton}
                     <Row>
                         <Col>
                             {this.numResultsSlider}
@@ -47,6 +48,20 @@ class DataRequestor extends React.Component {
                 {this.state.data ? <DataDownloader data={this.state.data}/> 
                     : null}
             </div>
+        )
+    }
+
+    get addQueryButton () {
+        return (
+            <Button onClick={this.addQuery}>Add Query</Button>
+        )
+    }
+
+    get subtractQueryButton () {
+        return (
+            this.state.queries.length > 1 ? 
+                <Button onClick={this.subtractQuery}>Subtract Query</Button> :
+                null
         )
     }
 
@@ -92,17 +107,26 @@ class DataRequestor extends React.Component {
         })
     }
 
+    addQuery = () => {
+        const queries = this.state.queries
+        queries.push({})
+        this.setState({queries:queries})
+    }
+
+    subtractQuery = () => {
+        const queries = this.state.queries.slice(0,this.state.queries.length-1)
+        this.setState({queries:queries})
+    }
+
     onSubmit = (event) => {
+        event.preventDefault();
+        
         this.setState({
             gatheringData:true,
             data: null,
         })
-        event.preventDefault();
-        DataRetriever.getComments(
-            this.state.afterDate,
-            this.state.beforeDate,
-            this.state.subreddit,
-            this.state.query,
+        DataRetriever.getRequests(
+            this.state.queries,
             this.state.numResults,
             this.setProgress)
             .then(commentData => this.setState({
@@ -117,15 +141,6 @@ class DataRequestor extends React.Component {
                 })
             });
 
-    }
-
-    /**
-     * @summary Adds another query to the page/request
-     */
-    addQuery = () => {
-        this.setState({
-            queries: queries.push({})
-        })
     }
 
     setProgress = (progress) => {

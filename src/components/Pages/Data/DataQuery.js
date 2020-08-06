@@ -19,20 +19,23 @@ class DataQuery extends React.Component {
 
     render() {
         return(
-            <Row>
-                <Col>
-                    <Form.Control placeholder="Subreddit" 
-                        onChange={e => 
-                            this.eventChange(e,"subreddit")}/>
-                    {this.afterDatePicker}
-                </Col>
-                <Col>
-                    <Form.Control placeholder="Search Term" 
-                        onChange={e => 
-                            this.eventChange(e,"term")}/>
-                    {this.beforeDatePicker}
-                </Col>
-            </Row>
+            <>
+                <Row>
+                    <Col>
+                        <Form.Control placeholder="Subreddit" 
+                            onChange={e => 
+                                this.eventChange(e,"subreddit")}/>
+                        {this.afterDatePicker}
+                    </Col>
+                    <Col>
+                        <Form.Control placeholder="Search Term" 
+                            onChange={e => 
+                                this.eventChange(e,"term")}/>
+                        {this.beforeDatePicker}
+                    </Col>
+                </Row>
+                <hr/>
+            </>
         )
     }
 
@@ -43,7 +46,6 @@ class DataQuery extends React.Component {
      */
     eventChange(event, field) {
         event.preventDefault();
-
         this.props.onChange(this.props.index,field,event.target.value);
     }
 

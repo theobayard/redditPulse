@@ -1,10 +1,12 @@
 :root{
   --t1-color: #ff5100;
   --t1-color-darker: #d14200;
-  --t2-color: #e0e0e0;
+  --t1-color-translucent: #ff51008a;
+  --t2-color: #ffffff;
   --t3-color: #bebebe;
   --main-bg: #262626;
   background-color: var(--main-bg);
+  --item-spacing: 10px;
 }
 
 body {
@@ -34,8 +36,21 @@ h1, h2, h3, h4 {
 
 /* Pages */
 
+.page {
+  margin-bottom: 50px;
+}
+
+hr {
+  color:var(--t3-color);
+  background-color:var(--t3-color);
+  height:3px;
+  margin-bottom: 0px;
+  margin-top: var(--item-spacing);
+  border-radius: 2px;
+}
+
 input.form-control {
-  margin-top: 10px;
+  margin-top: var(--item-spacing);
 }
 
 div.page {
@@ -75,13 +90,13 @@ div#num-results-slider {
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
-  background-color: #fff;
+  background-color: var(--t2-color);
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   margin:auto;
-  margin-top: 10px;
+  margin-top: var(--item-spacing);
 }
 
 .react-datepicker-wrapper {
@@ -93,9 +108,24 @@ div#num-results-slider {
   padding-left: 15px;
   padding-right: 15px;
   margin:auto;
-  margin-top: 10px;
+  margin-top: var(--item-spacing);
   background: var(--t1-color);
   border-color: var(--t1-color);
+}
+
+.btn:hover {
+  background: var(--t1-color-darker);
+  border-color: var(--t1-color-darker);
+}
+
+.btn:focus {
+  background: var(--t1-color-darker);
+  border-color: var(--t1-color-darker);
+  box-shadow: 0 0 0 0.2rem var(--t1-color-translucent);
+}
+
+.btn.large-font {
+  font-size: large;
 }
 
 .inputR {
@@ -106,6 +136,10 @@ div#num-results-slider {
   opacity: 1;
   outline: none;
   margin: 0 auto;
+}
+
+.form-control {
+  background-color: var(--t2-color);
 }
 
 .form-control-range {
@@ -145,6 +179,6 @@ div#num-results-slider {
 }
 
 div.progress {
-  margin-top: 10px;
+  margin-top: var(--item-spacing);
 }
 
