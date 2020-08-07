@@ -120,7 +120,7 @@ class DataRequestor extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault();
-        
+
         this.setState({
             gatheringData:true,
             data: null,
@@ -183,8 +183,7 @@ class DataRequestor extends React.Component {
     }
 
     alertError = (err) => {
-        console.log("alertError called");
-        ReactDOM.render(<ErrorModal err={err}/>,document.getElementById('error-modal'))
+        ReactDOM.render(<ErrorModal err={err}/>,document.getElementById('modal'))
     }
 }
 

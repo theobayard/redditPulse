@@ -11,7 +11,7 @@ import Data from './components/Pages/Data/Data'
 function App() {
   return (
     <BrowserRouter>
-        <div id={"error-modal"}></div>
+        <div id={"modal"}></div>
         <div>
           <Navigation />
             <Switch>

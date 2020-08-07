@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button'
+import {Row, Col, Button} from 'react-bootstrap'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
 class DataDownloader extends React.Component {
@@ -14,8 +14,19 @@ class DataDownloader extends React.Component {
     render() {
         return(
             <>
-                <Button onClick={this.downloadCSV}>Download Data</Button>
-                {this.progressBar}
+            <Row>
+                <Col>
+                    <Button onClick={this.downloadCSV} variant="secondary">
+                        Download jsLDA 2.0 Data
+                    </Button>
+                </Col>
+                <Col>
+                    <Button onClick={this.downloadJSON} variant="secondary">
+                        Download Data
+                    </Button>
+                </Col>
+            </Row>
+            {this.progressBar}
             </>
         )
     }
@@ -48,6 +59,14 @@ class DataDownloader extends React.Component {
             gatheringData: false,
             progress: 0,
         })
+    }
+
+    downloadJSON = () => {
+        var atag = document.createElement("a");
+        var file = new Blob([JSON.stringify(this.props.data)], {type: 'text/json'});
+        atag.href = URL.createObjectURL(file);
+        atag.download = "redditPulseData.json";
+        atag.click();
     }
 
     getCSV() {

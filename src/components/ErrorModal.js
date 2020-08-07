@@ -18,7 +18,7 @@ function ErrorModal(props) {
           </Modal.Header>
           <Modal.Body>The following error has occured: {props.err.message}</Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button onClick={handleClose}>
               Close
             </Button>
           </Modal.Footer>
