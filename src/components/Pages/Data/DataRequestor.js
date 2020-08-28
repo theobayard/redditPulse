@@ -109,7 +109,7 @@ class DataRequestor extends React.Component {
 
     addQuery = () => {
         const queries = this.state.queries
-        queries.push({})
+        queries.push({...queries[queries.length-1]})
         this.setState({queries:queries})
     }
 

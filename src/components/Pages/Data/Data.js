@@ -18,7 +18,19 @@ class Data extends React.Component {
 
     get help() {
         return (
-            <h1>You have been helped</h1>
+            <>
+                <h2>How to use the Data Page</h2>
+                <hr/>
+                <br/>
+                <h3>Queries</h3>
+                <p>
+                    You can use these to request subsets of the data on pushshift. 
+                    You may add as many queries as you would like. The number of results
+                    will be split up evenly between each query. The subreddit field accepts
+                    only one subreddit per query and is case sensitive. The search term field 
+                    will restrict results to ones which contain the exact word or phrase entered.
+                </p>
+            </>
         )
     }
 }
