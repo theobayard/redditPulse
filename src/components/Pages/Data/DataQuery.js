@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker'
  * @summary A form that gives options for a pushshift query
  */
 class DataQuery extends React.Component {
-    static minDate = new Date(Date.parse("2005-12-01"));
+    static _minDate = new Date(Date.parse("2005-12-01"));
     static maxDate = new Date(Date.now());
 
     constructor(props) {
@@ -59,7 +59,7 @@ class DataQuery extends React.Component {
                     onChange={e => 
                         this.props.onChange(this.props.index,"afterDate",e)}
                     showTimeSelect
-                    minDate={DataQuery.minDate}
+                    minDate={DataQuery._minDate}
                     maxDate={DataQuery.maxDate}/>
             </div>
         )
@@ -75,10 +75,18 @@ class DataQuery extends React.Component {
                     onChange={e => 
                         this.props.onChange(this.props.index,"beforeDate",e)}
                     showTimeSelect
-                    minDate={DataQuery.minDate}
+                    minDate={this.minDate}
                     maxDate={DataQuery.maxDate}/>
             </div>
         )
+    }
+
+    get minDate() {
+        // If an after date is selected, use that
+        if(this.props.d.afterDate) {return this.props.d.afterDate}
+
+        // Otherwise use the default
+        return this._minDate;
     }
 }
 
