@@ -14,7 +14,6 @@ const Navigation = props => {
                 <Nav className="mr-auto" activeKey={location.pathname}>
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="/data">Data</Nav.Link>
-                    <Nav.Link href="/about">About</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

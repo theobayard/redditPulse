@@ -1,14 +1,15 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
 import "react-datepicker/dist/react-datepicker.css";
 import {Form, Row, Col, Button, ProgressBar} from 'react-bootstrap'
-
+import {ErrorContext} from '../../ErrorContextProvider'
 import DataRetriever from '../../../DataRetriever.js'
 import DataDownloader from './DataDownloader'
-import ErrorModal from '../../ErrorModal'
 import DataQuery from './DataQuery'
 
+
 class DataRequestor extends React.Component {
+    static contextType = ErrorContext;
+
     minDate = new Date(Date.parse("2005-12-01"));
     maxDate = new Date(Date.now());
     minResults = 1000;
@@ -183,7 +184,7 @@ class DataRequestor extends React.Component {
     }
 
     alertError = (err) => {
-        ReactDOM.render(<ErrorModal err={err}/>,document.getElementById('modal'))
+        this.context.addError(err.message)
     }
 }
 
