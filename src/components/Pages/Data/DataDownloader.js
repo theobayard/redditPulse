@@ -93,8 +93,12 @@ class DataDownloader extends React.Component {
 
             csv = csv.slice(0, -1) + "\n"; // Remove last comma
             completed++;
+
+            const percentDone = Math.round(completed/data.length);
+            
             this.setState({
-                progress: Math.round(completed/data.length),
+                // Update progress
+                progress: percentDone,
             })
         }
 
